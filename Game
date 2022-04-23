@@ -1,0 +1,134 @@
+public class Game
+{
+  private Team home, away;
+  private int homeAdvantageBoost, possessions; //maybe add player skill if home?
+  private boolean homeAdvantage, displayPBP; //displayPBP is play by play
+  Game(Team home, Team away, boolean homeAdvantage, boolean displayPBP) //b is home
+  {
+    this.homeAdvantage = homeAdvantage;
+    this.home = home;
+    this.away = away;
+    this.displayPBP = displayPBP;
+    homeAdvantageBoost = 1; //change based on how much you want home to be helped
+    possessions = 100; //autoset for basketball
+  }
+  public void playGame()
+  {
+    if(homeAdvantage == true) {
+      for(int i = 0; i < 5; i++) {
+        home.getPlayer(i).addHomeBoost(homeAdvantageBoost);
+     }
+    }
+
+     for(int i = 0; i < 5; i++) {
+       home.getPlayer(i).applyTeamChemistry();
+       away.getPlayer(i).applyTeamChemistry();
+     }
+     boolean swap = true; //used to alternate between teams
+     int homePlayerIndex = 0; //used to rotate through players shot attempts
+     int awayPlayerIndex = 0; 
+     for(int i = 0; i < possessions; i++) {
+       if(swap == false) {
+         if(away.getPlayer(awayPlayerIndex).generateDefense() == false) {
+           home.addScore(home.getPlayer(homePlayerIndex).generatePoints());
+         } 
+         swap = true;
+       } else {
+         if(home.getPlayer(homePlayerIndex).generateDefense() == false) {
+           away.addScore(away.getPlayer(awayPlayerIndex).generatePoints());
+         }
+         swap = false;
+       }
+       
+       if(displayPBP == true) {
+         if(swap == false) {
+           if(i == possessions) {
+              System.out.println("Final Score: " + home.getName() + ": " + home.getScore() + " " + away.getName() + ": " + away.getScore() + " " + home.getPlayer(homePlayerIndex).getName());
+            } else if(i == possessions/2) {
+                System.out.println("Half Time Score: " + home.getName() + ": " + home.getScore() + " " + away.getName() + ": " + away.getScore() + " " + home.getPlayer(homePlayerIndex).getName());
+            } else if(i == possessions/4) {
+                System.out.println("1st Quarter Score: " + home.getName() + ": " + home.getScore() + " " + away.getName() + ": " + away.getScore() + " " + home.getPlayer(homePlayerIndex).getName());
+            } else if(i == possessions/4 * 3) {
+                System.out.println("3rd Quarter Score: " + home.getName() + ": " + home.getScore() + " " + away.getName() + ": " + away.getScore() + " " + home.getPlayer(homePlayerIndex).getName());
+            } else {
+              System.out.println(home.getName() + ": " + home.getScore() + " " + away.getName() + ": " + away.getScore() + " " + home.getPlayer(homePlayerIndex).getName());
+            }
+        } else {
+          if(i == possessions) {
+              System.out.println("Final Score: " + away.getName() + ": " + away.getScore() + " " + home.getName() + ": " + home.getScore() + " " + away.getPlayer(homePlayerIndex).getName());
+            } else if(i == possessions/2) {
+                System.out.println("Half Time Score: " + away.getName() + ": " + away.getScore() + " " + home.getName() + ": " + home.getScore() + " " + away.getPlayer(homePlayerIndex).getName());
+            } else if(i == possessions/4) {
+                System.out.println("1st Quarter Score: " + away.getName() + ": " + away.getScore() + " " + home.getName() + ": " + home.getScore() + " " + away.getPlayer(homePlayerIndex).getName());
+            } else if(i == possessions/4 * 3) {
+                System.out.println("3rd Quarter Score: " + away.getName() + ": " + away.getScore() + " " + home.getName() + ": " + home.getScore() + " " + away.getPlayer(homePlayerIndex).getName());
+            } else {
+              System.out.println(away.getName() + ": " + away.getScore() + " " + home.getName() + ": " + home.getScore() + " " + away.getPlayer(homePlayerIndex).getName());
+            }
+        }
+       } 
+       if(swap == true) { //inverse 
+         homePlayerIndex++;
+       } else {
+         awayPlayerIndex++;
+       }
+       if(homePlayerIndex > 4) {
+         homePlayerIndex = 0;
+       }
+       if(awayPlayerIndex > 4) {
+         awayPlayerIndex = 0;
+       }
+     }
+  }
+  
+  public void displayGameResults()
+  {
+    System.out.println("\nFinal Score: " + home.getName() + ": " + home.getScore() + 
+    " " + away.getName() + ": " + away.getScore());
+  }
+  public void displayPlayerResults()
+  {
+    System.out.println("Player Stats:");
+    System.out.println(home.getName() + ":");
+    for(int i = 0; i < 5; i++) {
+      System.out.println(home.getPlayer(i).getName() + "|" + home.getPlayer(i).getGamePoints() + "|" + home.getPlayer(i).getGameStops());
+    }
+    System.out.println("");
+    System.out.println(away.getName() + ":");
+    for(int i = 0; i < 5; i++) {
+      System.out.println(away.getPlayer(i).getName() + "|" + away.getPlayer(i).getGamePoints() + "|" + away.getPlayer(i).getGameStops());
+    }
+  }
+  public void displayStatInput() {
+    String homeLowerCase = home.getName().toLowerCase();
+    String awayLowerCase = away.getName().toLowerCase();
+    for(int i = 0; i < 5; i++) {
+      int newTotal = home.getPlayer(i).getGamePoints() + home.getPlayer(i).getTotalPoints();
+      System.out.print(homeLowerCase + ".getPlayer(" + i + ")" + ".setTotalPoints(" + newTotal + ");");
+    }
+    for(int i = 0; i < 5; i++) {
+      int newTotal = home.getPlayer(i).getGameStops() + home.getPlayer(i).getTotalStops();
+      System.out.print(homeLowerCase + ".getPlayer(" + i + ")" + ".setTotalStops(" + newTotal + ");");
+    }
+    for(int i = 0; i < 5; i++) {
+      int newTotal = away.getPlayer(i).getGamePoints() + away.getPlayer(i).getTotalPoints();
+      System.out.print(awayLowerCase + ".getPlayer(" + i + ")" + ".setTotalPoints(" + newTotal + ");");
+    }
+    for(int i = 0; i < 5; i++) {
+      int newTotal = away.getPlayer(i).getGameStops() + away.getPlayer(i).getTotalStops();
+      System.out.print(awayLowerCase + ".getPlayer(" + i + ")" + ".setTotalStops(" + newTotal + ");");
+    }
+    int homeTotalFor = home.getScore() + home.getPointsFor();
+    int homeTotalAgainst = away.getScore() + home.getPointsAgainst();
+    int awayTotalFor = away.getScore() + away.getPointsFor();
+    int awayTotalAgainst = home.getScore() + away.getPointsAgainst();
+    int homeGamesPlayed = home.getGamesPlayed() + 1;
+    int awayGamesPlayed = away.getGamesPlayed() + 1;
+    System.out.print(homeLowerCase + ".setPointsFor(" + homeTotalFor + ");");
+    System.out.print(homeLowerCase + ".setPointsAgainst(" + homeTotalAgainst + ");");
+    System.out.print(awayLowerCase + ".setPointsFor(" + awayTotalFor + ");");
+    System.out.print(awayLowerCase + ".setPointsAgainst(" + awayTotalAgainst + ");");
+    System.out.print(homeLowerCase + ".setGamesPlayed(" + homeGamesPlayed + ");");
+    System.out.print(awayLowerCase + ".setGamesPlayed(" + awayGamesPlayed + ");");
+  }
+}
