@@ -1,0 +1,292 @@
+import java.util.Arrays;
+import java.util.Collections;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+//REMEMBER STAT LEADERBOARDS ARE NOT ACCURATE UNTIL YOU UPDATE WITH LATEST INPUT
+Team sharks = new Team("Sharks", 0);
+Team dolphins = new Team("Dolphins", 0);
+Team snakes = new Team("Snakes", 0);
+Team tigers = new Team("Tigers", 0);
+Team eagles = new Team("Eagles", 0);
+Team hawks = new Team("Hawks", 0);
+Team rays = new Team("Rays", 0);
+Team lions = new Team("Lions", 0);
+
+boolean compareByPoints = true;
+
+Player sharksP1 = new Player("Thomas", sharks, 0, 0); Player sharksP2 = new Player("James", sharks, -5, 0); Player sharksP3 = new Player("Nicolas", sharks, -10, 0); Player sharksP4 = new Player("Jordan", sharks, -10, 0); Player sharksP5 = new Player("Alex", sharks, 40, 0);
+Player tigersP1 = new Player("Milo", tigers, 1, 0); Player tigersP2 = new Player("Kenny", tigers, -2, 0); Player tigersP3 = new Player("Jackson", tigers, -3, 0); Player tigersP4 = new Player("Sam", tigers, -5, 0); Player tigersP5 = new Player("Conner", tigers, 1, 0);
+Player eaglesP1 = new Player("Liam", eagles, 2, 0); Player eaglesP2 = new Player("Ben", eagles, -4, 0); Player eaglesP3 = new Player("Daniel", eagles, -3, 0); Player eaglesP4 = new Player("Mateo", eagles, -5, 0); Player eaglesP5 = new Player("Joseph", eagles, 4, 0);
+Player dolphinsP1 = new Player("Kyle", dolphins, 5, 0); Player dolphinsP2 = new Player("Ryan", dolphins, 2, 0); Player dolphinsP3 = new Player("John", dolphins, 3, 0); Player dolphinsP4 = new Player("Vance", dolphins, 5, 0); Player dolphinsP5 = new Player("Shawn", dolphins, 1, 0);
+Player hawksP1 = new Player("Oliver", hawks, -1, 0); Player hawksP2 = new Player("Henry", hawks, -2, 0); Player hawksP3 = new Player("Logan", hawks, -1, 0); Player hawksP4 = new Player("Owen", hawks, -7, 0); Player hawksP5 = new Player("David", hawks, -1, 0);
+Player raysP1 = new Player("Elijah", rays, -3, 0); Player raysP2 = new Player("Mason", rays, -15, 0); Player raysP3 = new Player("Jack", rays, -13, 0); Player raysP4 = new Player("Theo", rays, -7, 0); Player raysP5 = new Player("Wyatt", rays, 20, 0);
+Player lionsP1 = new Player("Brent", lions, -4, 0); Player lionsP2 = new Player("Mark", lions, -6, 0); Player lionsP3 = new Player("Emit", lions, -9, 0); Player lionsP4 = new Player("Eli", lions, 6, 0); Player lionsP5 = new Player("Ken", lions, -10, 0);
+Player snakesP1 = new Player("Jarvis", snakes, 1, 0); Player snakesP2 = new Player("Jim", snakes, 0, 0); Player snakesP3 = new Player("Cordan", snakes, 0, 0); Player snakesP4 = new Player("Samuel", snakes, 0, 0); Player snakesP5 = new Player("Luke", snakes, 0, 0);
+
+Player[] allPlayers = {sharksP1, sharksP2, sharksP3, sharksP4, sharksP5, tigersP1, tigersP2, tigersP3, tigersP4, tigersP5, eaglesP1, eaglesP2, eaglesP3, eaglesP4, eaglesP5, dolphinsP1, dolphinsP2, dolphinsP3, dolphinsP4, dolphinsP5,
+                         hawksP1, hawksP2, hawksP3, hawksP4, hawksP5, raysP1, raysP2, raysP3, raysP4, raysP5, lionsP1, lionsP2, lionsP3, lionsP4, lionsP5, snakesP1, snakesP2, snakesP3, snakesP4, snakesP5};
+Team[] allTeams = {sharks, tigers, eagles, dolphins, hawks, rays, lions, snakes};
+public void setup() {
+  sharks.addPlayer(sharksP1); sharks.addPlayer(sharksP2); sharks.addPlayer(sharksP3); sharks.addPlayer(sharksP4); sharks.addPlayer(sharksP5);
+  tigers.addPlayer(tigersP1); tigers.addPlayer(tigersP2); tigers.addPlayer(tigersP3); tigers.addPlayer(tigersP4); tigers.addPlayer(tigersP5);
+  eagles.addPlayer(eaglesP1); eagles.addPlayer(eaglesP2); eagles.addPlayer(eaglesP3); eagles.addPlayer(eaglesP4); eagles.addPlayer(eaglesP5);
+  dolphins.addPlayer(dolphinsP1); dolphins.addPlayer(dolphinsP2); dolphins.addPlayer(dolphinsP3); dolphins.addPlayer(dolphinsP4); dolphins.addPlayer(dolphinsP5);
+  hawks.addPlayer(hawksP1); hawks.addPlayer(hawksP2); hawks.addPlayer(hawksP3); hawks.addPlayer(hawksP4); hawks.addPlayer(hawksP5);
+  rays.addPlayer(raysP1); rays.addPlayer(raysP2); rays.addPlayer(raysP3); rays.addPlayer(raysP4); rays.addPlayer(raysP5);
+  lions.addPlayer(lionsP1); lions.addPlayer(lionsP2); lions.addPlayer(lionsP3); lions.addPlayer(lionsP4); lions.addPlayer(lionsP5);
+  snakes.addPlayer(snakesP1); snakes.addPlayer(snakesP2); snakes.addPlayer(snakesP3); snakes.addPlayer(snakesP4); snakes.addPlayer(snakesP5);
+  
+/*                               
+                                      |Sh | D |Sn | T | E | H | R | L |
+Sharks: T0 J-5 N-10 J-10 A40   | +15  |XXX|0-0|0-0|0-0|0-0|0-0|0-0|0-0|
+Dolphins: N5 R2 J3 J5 J1       | +16  |0-0|XXX|0-0|0-0|0-0|0-0|0-0|0-0|
+Snakes: J1 J0 C0 S0 L0         | +1   |0-0|0-0|XXX|0-0|0-0|0-0|0-0|0-0|
+Tigers: M1 K-2 J-3 S-5 K1      | -8   |0-0|0-0|0-0|XXX|0-0|0-0|0-0|0-0|
+Eagles: L2 B-4 D-3 M-5 J4      | -6   |0-0|0-0|0-0|0-0|XXX|0-0|0-0|0-0|
+Hawks: O-1 H-2 L-1 O-7 D-1     | -12  |0-0|0-0|0-0|0-0|0-0|XXX|0-0|0-0|
+Rays: E-3 M-15 J-13 T-7 W20    | -18  |0-0|0-0|0-0|0-0|0-0|0-0|XXX|0-0|
+Lions: B-4 M-9 E-5 E3 K-10     | -25  |0-0|0-0|0-0|0-0|0-0|0-0|0-0|XXX|
+*/
+  Game[] gamesToday = {new Game(sharks, dolphins, true, true),
+                       new Game(snakes, tigers, true, false),
+                       new Game(eagles, hawks, true, false),
+                       new Game(rays, lions, true, false)};
+  
+  for(int i = 0; i < gamesToday.length; i++) {
+    gamesToday[i].playGame();
+    gamesToday[i].displayStatInput();
+  }
+  for(int i = 0; i < gamesToday.length; i++) {
+    gamesToday[i].displayStatInput();
+  }
+  for(int i = 0; i < gamesToday.length; i++) {
+    gamesToday[i].displayGameResults();
+    gamesToday[i].displayPlayerResults();
+  }
+    
+}
+
+
+/*STANDINGS:
+Dolphins  |  0 - 0
+Sharks    |  0 - 0
+Eagles    |  0 - 0
+Snakes    |  0 - 0
+-----------------------------Playoffs  
+Rays      |  0 - 0
+Hawks     |  0 - 0 
+Lions     |  0 - 0
+Tigers    |  0 - 0
+
+
+
+Season:
+GAME 1:
+Sharks vs Dolphins:
+1. 
+2. 
+3. 
+
+GAME 2:
+Sharks vs Tigers:
+1. 
+2. 
+3. 
+
+GAME 3:
+Sharks vs Snakes:
+1. 
+2. 
+3. 
+
+GAME 4:
+Sharks vs Eagles:
+1. 
+2. 
+3. 
+
+GAME 5:
+Sharks vs Lions:
+1. 
+2. 
+3. 
+
+GAME 6:
+Sharks vs Hawks:
+1. 
+2. 
+3. 
+
+GAME 7:
+Sharks vs Rays:
+1. 
+2. 
+3. 
+
+Semi-Finals:
+Sharks vs Eagles:  
+1. 
+2. 
+3.                       
+4.                       
+5.
+Dolphins vs Snakes: 
+1. 
+2. 
+3. 
+4. 
+5.
+
+Finals:
+Sharks vs Snakes: 
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+7. 
+*/
+
+public void draw() {
+  
+}
+
+public void keyTyped() {
+  if(key == 'a') {
+    displayPointsLeaderboard();
+  } else if(key == 's') {
+    displayStopsLeaderboard();
+  } else if(key == 't') {
+    displayTeamLeaderboard();
+  }
+}
+  
+public void displayPointsLeaderboard() {
+  System.out.println("Points Leaderboard:");
+  System.out.println("Player" + "\t\t" + "Points" + "\t\t" + "Stops" + "\t\t" + "Team");
+  for(int i = 0; i < allPlayers.length; i++) {
+    allPlayers[i].getAvgPoints();
+    allPlayers[i].getAvgStops();
+  }
+  compareByPoints = true;
+  Arrays.sort(allPlayers);
+  for(int i = 0; i < allPlayers.length; i++) {
+    System.out.println(i + 1 + "." + allPlayers[i].getName() + "\t\t" + allPlayers[i].getAvgPoints() + ";\t\t" + allPlayers[i].getAvgStops() + ";\t\t" + allPlayers[i].getTeam().getName());
+  }
+}
+public void displayStopsLeaderboard() {
+  System.out.println("Stops Leaderboard:");
+  System.out.println("Player" + "\t\t" + "Stops" + "\t\t" + "Points" + "\t\t" + "Team");
+  for(int i = 0; i < allPlayers.length; i++) {
+    allPlayers[i].getAvgStops();
+    allPlayers[i].getAvgPoints();
+  }
+  compareByPoints = false;
+  Arrays.sort(allPlayers);
+  for(int i = 0; i < allPlayers.length; i++) {
+    System.out.println(i + 1 + "." + allPlayers[i].getName() + "\t\t" + allPlayers[i].getAvgStops() + ";\t\t" + allPlayers[i].getAvgPoints() + ";\t\t" + allPlayers[i].getTeam().getName());
+  }
+}
+
+public void displayTeamLeaderboard() {
+  System.out.println("Team Leaderboard: Points");
+  System.out.println("Team" + "\t\t" + "For" + "\t\t" + "Against" + "\t\t" + "Diff");
+  Arrays.sort(allTeams);
+  for(int i = 0; i < allTeams.length; i++) {
+    System.out.println(i + 1 + "." + allTeams[i].getName() + "\t\t" + allTeams[i].getAvgPointsFor() + "\t\t" + allTeams[i].getAvgPointsAgainst() + "\t\t" + allTeams[i].getAvgPointDiff());
+  }
+}
+
+/*                               
+                                      |Sh | D |Sn | T | E | H | R | L |
+Sharks: T0 J-5 N-10 J-10 A40   | +15  |XXX|0-0|0-0|0-0|0-0|0-0|0-0|0-0|
+Dolphins: N5 R2 J3 J5 J1       | +16  |0-0|XXX|0-0|0-0|0-0|0-0|0-0|0-0|
+Snakes: J1 J0 C0 S0 L0         | +1   |0-0|0-0|XXX|0-0|0-0|0-0|0-0|0-0|
+Tigers: M1 K-2 J-3 S-5 K1      | -8   |0-0|0-0|0-0|XXX|0-0|0-0|0-0|0-0|
+Eagles: L2 B-4 D-3 M-5 J4      | -6   |0-0|0-0|0-0|0-0|XXX|0-0|0-0|0-0|
+Hawks: O-1 H-2 L-1 O-7 D-1     | -12  |0-0|0-0|0-0|0-0|0-0|XXX|0-0|0-0|
+Rays: E-3 M-15 J-13 T-7 W20    | -18  |0-0|0-0|0-0|0-0|0-0|0-0|XXX|0-0|
+Lions: B-4 M-9 E-5 E3 K-10     | -25  |0-0|0-0|0-0|0-0|0-0|0-0|0-0|XXX|
+*/
+
+/*STANDINGS:
+Dolphins  |  0 - 0
+Sharks    |  0 - 0
+Eagles    |  0 - 0
+Snakes    |  0 - 0
+-----------------------------Playoffs  
+Rays      |  0 - 0
+Hawks     |  0 - 0 
+Lions     |  0 - 0
+Tigers    |  0 - 0
+
+
+
+Season:
+GAME 1:
+Sharks vs Dolphins:
+1. 
+2. 
+3. 
+
+GAME 2:
+Sharks vs Tigers:
+1. 
+2. 
+3. 
+
+GAME 3:
+Sharks vs Snakes:
+1. 
+2. 
+3. 
+
+GAME 4:
+Sharks vs Eagles:
+1. 
+2. 
+3. 
+
+GAME 5:
+Sharks vs Lions:
+1. 
+2. 
+3. 
+
+GAME 6:
+Sharks vs Hawks:
+1. 
+2. 
+3. 
+
+GAME 7:
+Sharks vs Rays:
+1. 
+2. 
+3. 
+
+Semi-Finals:
+Sharks vs Eagles:  
+1. 
+2. 
+3.                       
+4.                       
+5.
+Dolphins vs Snakes: 
+1. 
+2. 
+3. 
+4. 
+5.
+
+Finals:
+Sharks vs Snakes: 
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+7. 
+*/
