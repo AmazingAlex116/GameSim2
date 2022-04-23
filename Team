@@ -1,0 +1,48 @@
+public class Team implements Comparable<Team>
+{
+  private int score, chemistry, pointsFor, pointsAgainst, gamesPlayed;
+  private float avgPointsFor, avgPointsAgainst, avgPointDiff;
+  private String name;
+  private ArrayList<Player> players = new ArrayList<Player>();
+  Team(String name, int chemistry) {
+    this.name = name;
+    this.chemistry = chemistry;
+    this.pointsFor = 0;
+    this.pointsAgainst = 0;
+  }
+  Team(String name, Player a, Player b, Player c, Player d, Player e, int chemistry) {
+    this(name, chemistry);
+    players.add(a);
+    players.add(b);
+    players.add(c);
+    players.add(d);
+    players.add(e);
+  }
+  public void addPlayer(Player player) {players.add(player);}
+  public void setGamesPlayed(int played) {gamesPlayed = played;}
+  public int getGamesPlayed() {return gamesPlayed;}
+  public String getName() {return name;}
+  public Player getPlayer(int index) {return players.get(index);}
+  public int getNumOfPlayers() {return players.size();}
+  public int getChemistry() {return chemistry;}
+  public int getScore() {return score;}
+  public void setPointsFor(int points) {this.pointsFor = points;}
+  public int getPointsFor() {return pointsFor;}
+  public void setPointsAgainst(int points) {this.pointsAgainst = points;}
+  public int getPointsAgainst() {return pointsAgainst;}
+  public void addScore(int score) {this.score += score;}
+  public float getAvgPointsFor() {
+    avgPointsFor = Math.round((float)pointsFor/getGamesPlayed()*10.0)/10.0;
+    return avgPointsFor;
+  }
+  public float getAvgPointsAgainst() {
+    avgPointsAgainst = Math.round((float)pointsAgainst/getGamesPlayed()*10.0)/10.0;
+    return avgPointsAgainst;
+  }
+  public float getAvgPointDiff() {avgPointDiff =  getAvgPointsFor() - getAvgPointsAgainst(); return avgPointDiff;}
+  
+  @Override
+  public int compareTo(Team other) {
+      return Float.compare(other.getAvgPointDiff(), this.getAvgPointDiff()); //need to use get in order to calc
+  }
+}
