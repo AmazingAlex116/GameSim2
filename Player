@@ -1,0 +1,99 @@
+public class Player implements Comparable<Player>
+{
+  private int oSkill, dSkill, gamePoints, gameStops, totalPoints, totalStops, scoreInformer, luckInformer, luck;
+  float avgPoints;
+  float avgStops;
+  private String name;
+  private Team team;
+  public boolean pro;
+  Player(String name, Team team, int oSkill, int dSkill)
+  {
+    pro = false; //adds -20 to offense skills
+    this.name = name;
+    this.team = team;
+    if(pro == false) {
+      this.oSkill = oSkill - 20;
+    } else {
+      this.oSkill = oSkill;
+    }
+    this.dSkill = dSkill;
+  }
+  public int getGamePoints() {return gamePoints;}
+  public int getGameStops() {return gameStops;}
+  public void addGamePoints(int points) {gamePoints += points;}
+  public void addHomeBoost(int boost) {
+    oSkill += boost;
+    dSkill += boost;
+  }
+  public int getTotalPoints() {return totalPoints;}
+  public int getTotalStops() {return totalStops;}
+  public void setTotalPoints(int totalPoints) {this.totalPoints = totalPoints;}
+  public void setTotalStops(int totalStops) {this.totalStops = totalStops;}
+  public void applyTeamChemistry() {oSkill += team.getChemistry(); dSkill += team.getChemistry();}
+  public String getName() {return name;}
+    public void generateLuck() {
+    luckInformer = (int)(Math.random()*101);
+    if(luckInformer > 96) {
+      luck = 30;
+    } else if(luckInformer > 90) {
+      luck = 15; 
+    } else if(luckInformer < 3) {
+      luck = -30;
+    } else if(luckInformer < 10) {
+      luck = -15;
+    } else {
+      luck = 0;
+    }
+  }
+  public int generatePoints() {
+    int score = 0;
+    scoreInformer = (int)(Math.random()*101) + oSkill + luck;
+    if(scoreInformer > 100) {
+      score += (int)(Math.random()*3 + 3);    
+    }else if(scoreInformer > 90) {
+      score += 3;
+    } else if(scoreInformer > 50) {
+      score += 2;
+    } else if(scoreInformer > 35) {
+      score += 1;
+    } else {
+      gamePoints += 0;
+    }
+    gamePoints += score;
+    return score;
+  }
+  public boolean generateDefense() {
+    int stopInformer = (int)(Math.random()*101) + dSkill + luck;
+    if(stopInformer > 100) {
+      gameStops++;
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  public float getAvgPoints() {
+    avgPoints = Math.round((float)totalPoints/team.getGamesPlayed()*10.0)/10.0;
+    return avgPoints;
+  }
+  
+  public float getAvgStops() {
+    avgStops = Math.round((float)totalStops/team.getGamesPlayed()*10.0)/10.0;
+    return avgStops;
+  }
+  public Team getTeam() {return team;}
+  
+  @Override
+  public boolean equals(Object other) {
+    Player otherPlayer = (Player)other;
+    return otherPlayer.name.equals(this.name) && otherPlayer.team.equals(this.team);
+  }
+  
+  public int compareTo(Player other) {
+    if(compareByPoints == true) {
+      return Integer.compare(other.getTotalPoints(), this.totalPoints);
+    } else {
+      return Integer.compare(other.getTotalStops(), this.totalStops);
+    }
+  }
+}
